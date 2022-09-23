@@ -1,10 +1,13 @@
 import 'dart:ui';
-import 'package:cyarty/views/main_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
+import '../data/login.dart';
+import '../home/layout/pages/home.dart';
+import '../home/layout/pages/layout.dart';
+import '../main.dart';
 import 'button.dart';
 
 enum Fruit { apple, banana }
@@ -23,6 +26,8 @@ class _HomeViewState extends State<HomeView> {
   Color myc = const Color.fromRGBO(37, 43, 50, 1);
   Color bule = const Color.fromRGBO(0, 74, 188, 1);
   Fruit? _fruit = Fruit.apple;
+  TextEditingController username = TextEditingController();
+  TextEditingController password = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -153,7 +158,18 @@ class _HomeViewState extends State<HomeView> {
                   itemCount: 3,
                 ),
             ),
-            ButtonStack(title:"${buttonText[currentIndex]}"),
+            GestureDetector(
+              child: ButtonStack(
+                title:"${buttonText[currentIndex]}",
+              ),
+              onTap: (){
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (BuildContext context) => LayoutScreen()),
+                );
+              },
+            ),
             const SizedBox(height: 10,)
           ],
         )
@@ -196,11 +212,11 @@ class _HomeViewState extends State<HomeView> {
           crossAxisAlignment:CrossAxisAlignment.start,
           children: [
             SizedBox(height: 100,),
-            input(dataField: "", title: "Phone Number"),
+            input(dataField: "", title: "Phone Number",controller: username),
             SizedBox(
               height: 20,
             ),
-            input(dataField: "", title: "Password", isPassword: true),
+            input(dataField: "", title: "Password", isPassword: true,controller: password),
             SizedBox(
               height: 12,
             ),
@@ -237,15 +253,15 @@ class _HomeViewState extends State<HomeView> {
         SizedBox(
           height: 20,
         ),
-        input(dataField: "", title: "Full Name"),
+        input(dataField: "", title: "Full Name",controller:TextEditingController() ),
         SizedBox(
           height: 20,
         ),
-        input(dataField: "", title: "Phone Number"),
+        input(dataField: "", title: "Phone Number",controller:TextEditingController()),
         SizedBox(
           height: 20,
         ),
-        input(dataField: "", title: "Password", isPassword: true),
+        input(dataField: "", title: "Password", isPassword: true,controller:TextEditingController()),
         Row(
           children: <Widget>[
             Expanded(
@@ -325,11 +341,14 @@ class _HomeViewState extends State<HomeView> {
   }
 
   Widget input(
-      {required String? dataField,
+      {
+        required String? dataField,
       bool isPassword = false,
+       required TextEditingController controller,
       required String title}) {
     return TextFormField(
       textAlign: TextAlign.center,
+      controller:controller ,
       onChanged: (value) {
         dataField = value;
         print("dataField = $dataField");

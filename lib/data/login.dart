@@ -6,18 +6,17 @@ import 'package:get/get_connect/connect.dart';
 class LoginService {
 
 
-  void login(String username, String password) async {
+  Future<String> login(String username, String password) async {
+
+    var map = new Map<String, dynamic>();
+    map['phone'] = username;
+    map['password'] = password;
 
     final response = await http.post(
-      Uri.parse('https://jsonplaceholder.typicode.com/albums'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body:{
-        'title': "hh",
-      },
+      Uri.parse('Http://cyarty.com/api/v1/auth/login'),
+      body: map,
     );
-    print("data is : ${response.body}");
+    return json.decode(response.body);
     /* if (response.statusCode == 200) {
       return TicketReply.fromJson(response.body);
     } else {
